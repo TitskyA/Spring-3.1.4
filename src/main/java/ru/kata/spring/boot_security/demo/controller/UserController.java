@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,16 +23,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/page")
-    public ModelAndView aboutUser(ModelAndView modelAndView, @AuthenticationPrincipal User user) {
-        modelAndView.addObject("user", user);
-        modelAndView.setViewName("userPage");
-        return modelAndView;
-    }
 
     @GetMapping("/currentUser")
-    public User getCurrentUser(@AuthenticationPrincipal User user) {
-        return userService.get(user.getId());
+    public ResponseEntity<User> getCurrentUser(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok().body(userService.get(user.getId()));
     }
 
 }

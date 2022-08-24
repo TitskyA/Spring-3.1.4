@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +31,13 @@ public class AdminController {
     }
 
     @GetMapping("/allUsers")
-    public List<User> showAllUsers() {
-        return userService.listUsers();
+    public ResponseEntity<List<User>> showAllUsers() {
+        return ResponseEntity.ok().body(userService.listUsers());
     }
 
     @GetMapping("/getUser/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.get(id);
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userService.get(id));
     }
 
     @PostMapping("/saveUser")
@@ -60,13 +61,6 @@ public class AdminController {
     @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
-    }
-
-    @GetMapping("/page")
-    public ModelAndView page(ModelAndView modelAndView, @AuthenticationPrincipal User user) {
-        modelAndView.addObject("currentUser", user);
-        modelAndView.setViewName("adminPage");
-        return modelAndView;
     }
 
 
